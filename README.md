@@ -129,9 +129,7 @@ Some EEG files may report that channels have no standard 10-20 montage position.
 This project is an adaptation of [sleep-scoring](https://github.com/x64-bit/sleep-scoring/tree/main) software. 
 
 The original work is: 
-Combrisson E, Vallat R, Eichenlaub J-B, O’Reilly C,Lajnef T, Guillot A, Ruby P and Jerbi K (2017).  
-         Sleep: An Open-Source Python Software for Visualization, Analysis, and Staging of Sleep Data. Front. Neuroinform. 11:60.  
-         doi:[10.3389/fninf.2017.00060](https://www.frontiersin.org/journals/neuroinformatics/articles/10.3389/fninf.2017.00060/full) 
+Combrisson E, Vallat R, Eichenlaub J-B, O’Reilly C,Lajnef T, Guillot A, Ruby P and Jerbi K (2017). Sleep: An Open-Source Python Software for Visualization, Analysis, and Staging of Sleep Data. Front. Neuroinform. 11:60. doi:[10.3389/fninf.2017.00060](https://www.frontiersin.org/journals/neuroinformatics/articles/10.3389/fninf.2017.00060/full) 
 
 This repository is intented to be useful to UR2NF / LN2T members. 
 Please fork the repository and adapt it to your own workflow. 
