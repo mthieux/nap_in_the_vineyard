@@ -111,7 +111,9 @@ Do not run `/usr/bin/python3 run_sleep_sco.py`; it may not contain the installed
 
 ## Lab-specific adaptations
 This project adapt the original software to the EEG files used in our lab. 
+
 For EEG-MEG recordings whose filename contains *tsss*, the channel names are kept unchanged.
+
 For Muse® recordings whose filename contains *eeg*, a standard 10-20 montage is applied and the following channel names are automatically renamed: 
 - eegch1 = T9
 - eegch2 = Fp1
@@ -125,6 +127,7 @@ Some EEG files may report that channels have no standard 10-20 montage position.
 
 ## Origin and attribution
 This project is an adaptation of [sleep-scoring](https://github.com/x64-bit/sleep-scoring/tree/main) software. 
+
 The original work is: 
 Combrisson E, Vallat R, Eichenlaub J-B, O’Reilly C,Lajnef T, Guillot A, Ruby P and Jerbi K (2017).  
          Sleep: An Open-Source Python Software for Visualization, Analysis, and Staging of Sleep Data. Front. Neuroinform. 11:60.  
