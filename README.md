@@ -2,7 +2,7 @@
 
 A lightweight Python launcher for visualizing and scoring sleep / EEG recordings, adapted from the [sleep-scoring](https://pypi.org/project/sleep-scoring/) software and configured for the data formats and workflows used in the UR2NF / LN2T lab. 
 
-<p align="center"> <img src="nap_in_the_vineyard.png" alt="Nap in the Vineyard" width="500"> </p>
+<p align="center"> <img src="nap_in_the_vineyard.png" alt="Nap in the Vineyard" width="250"> </p>
 
 ## What is this?
 Nap in the vineyard is a small standalone wrapper around the Python [sleep-scoring](https://pypi.org/project/sleep-scoring/) software. 
@@ -124,11 +124,11 @@ If needed, modify the EEG_CHANNEL_RENAME in `run_sleep_sco.py`
 Some EEG files may report that channels have no standard 10-20 montage position. The launcher keeps those channels and continues. The laucher may also warn about data amplitude; inspect the recording units before making scientific interpretations.
 
 ## Origin and attribution
-This project is an adaptation of [sleep-scoring] (https://github.com/x64-bit/sleep-scoring/tree/main) software. 
+This project is an adaptation of [sleep-scoring](https://github.com/x64-bit/sleep-scoring/tree/main) software. 
 The original work is: 
 Combrisson E, Vallat R, Eichenlaub J-B, O’Reilly C,Lajnef T, Guillot A, Ruby P and Jerbi K (2017).  
          Sleep: An Open-Source Python Software for Visualization, Analysis, and Staging of Sleep Data. Front. Neuroinform. 11:60.  
-         doi:[10.3389/fninf.2017.00060] (https://www.frontiersin.org/journals/neuroinformatics/articles/10.3389/fninf.2017.00060/full) 
+         doi:[10.3389/fninf.2017.00060](https://www.frontiersin.org/journals/neuroinformatics/articles/10.3389/fninf.2017.00060/full) 
 
 This repository is intented to be useful to UR2NF / LN2T members. 
 Please fork the repository and adapt it to your own workflow. 
