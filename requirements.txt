@@ -1,0 +1,14 @@
+mne==1.8.0
+numpy==2.0.2
+pandas==2.3.3
+scipy==1.13.1
+sleep_scoring==0.0.4
+visbrain==0.4.5
+vispy==0.16.2
+PyQt5==5.15.11
+PyOpenGL==3.1.10
+Pillow==11.3.0
+nibabel==5.3.3
+tensorpac==0.6.5
+imageio==2.37.2
+matplotlib==3.9.4
