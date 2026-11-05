@@ -14,63 +14,93 @@ The project is intented for lab use.
 
 ## What to see:
 - `run_sleep_sco.py`: the application launcher and hypnogram conversion logic
-- `launch.sh`: starts the application with the project environment
-- `setup.sh`: creates the environment and installs dependencies
+- `launch.sh` and `setup.sh`: macOS/Linux helpers for starting the application and creating its environment
 - `requirements.txt`: pinned package versions
 - `README.md`: this guide
 
-Every user should create their own `.venv` with the setup script.
+Every user should create a separate Python environment for this project.
 
 ## Prerequisites
-Python 3.9 is required. 
-Install Python 3.9 from [python.org](https://www.python.org/downloads/release/python-3913/) or another trusted Python distribution. 
-Confirm it is available:
+The application was initially developed and tested on macOS (Apple Silicon). Python 3.9 is the recommended version for both macOS and Windows. The Windows instructions below use native Windows Python; Windows support has not been tested across all hardware and graphics drivers.
+
+The GUI uses Qt, VisPy, and OpenGL. Windows Subsystem for Linux (WSL) can have display or OpenGL compatibility issues, so run the application directly on Windows instead of through WSL. Keep your graphics drivers up to date.
+
+Install Python 3.9 from [python.org](https://www.python.org/downloads/release/python-3913/) or use a Conda environment. Confirm Python is available:
 
 ```bash
 python3.9 --version
 ```
-The GUI uses Qt and VisPy, and the tested Anaconda Python 3.13 setup can abort with a macOS `malloc: Double free` error.
-The tested environment was macOS on Apple Silicon. The pinned packages come from PyPI; other operating systems may need platform-specific adjustments. In VS Code, install the Microsoft **Python** extension.
+The pinned packages come from PyPI. Other Python versions or platforms may need adjustments. In VS Code, install the Microsoft **Python** extension.
 
 ## One-time installation
-Open Terminal, move to the folder containing these files, and run:
+### macOS
+
+Open Terminal, move to the project folder, and run:
 
 ```bash
-cd /path/to/nap_in_the_vineyard
+cd /path/to/nap_in_the_vineyard-main
 ./setup.sh
 ```
 
-The script creates `.venv`, upgrades `pip`, and installs every package listed in `requirements.txt`.
-
-If Python 3.9 is installed but is not on `PATH`, provide its full path:
+The script creates `.venv`, upgrades `pip`, and installs the packages listed in `requirements.txt`. If Python 3.9 is not the default `python3`, specify its path:
 
 ```bash
 PYTHON_BIN=/full/path/to/python3.9 ./setup.sh
 ```
 
-Installation is normally needed only once per computer. 
-Re-run the setup script after changing the requirements file.
+### Windows (PowerShell)
+
+Open PowerShell in the project folder. Create a virtual environment and install the dependencies:
+
+```powershell
+py -3.9 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Alternatively, create and activate a Conda environment, then install the same requirements:
+
+```powershell
+conda create -n nap-in-the-vineyard python=3.9
+conda activate nap-in-the-vineyard
+python -m pip install -r requirements.txt
+```
+
+Run the setup once per environment. Reinstall the requirements after they change.
 
 ## Run the application
-The wrapper always uses the local `.venv` and `run_sleep_sco.py`. It can be called from any directory. Use absolute paths for data files when working from elsewhere:
+### macOS
+
+Use the project launcher, which runs `run_sleep_sco.py` with the local `.venv`:
 
 ```bash
-/path/to/nap_in_the_vineyard/launch.sh \
-  /path/to/recording.edf \
-  --hypnogram /path/to/stages.csv
+./launch.sh
 ```
 
-For a recording without a hypnogram, the program opens a hypnogram picker. Cancel it to continue without one:
+The recording picker opens first, followed by an optional hypnogram picker. Cancel the hypnogram picker to continue without one. You can also pass paths directly:
 
 ```bash
-/path/to/nap_in_the_vineyard/launch.sh /path/to/recording.edf
+./launch.sh /path/to/recording.edf --hypnogram /path/to/stages.csv
 ```
 
-The window stays attached to the terminal while it is open. Close the window to end the process. 
-Do not set `QT_QPA_PLATFORM = offscreen`; the application needs a real desktop/OpenGL display.
+### Windows (PowerShell)
+
+Run the script directly with the Python interpreter in `.venv`; do not use the Bash launcher:
+
+```powershell
+.\.venv\Scripts\python.exe .\run_sleep_sco.py
+```
+
+The recording picker opens first, followed by an optional hypnogram picker. To pass paths directly, use Windows paths in quotes:
+
+```powershell
+.\.venv\Scripts\python.exe .\run_sleep_sco.py "C:\data\recording.edf" --hypnogram "C:\data\stages.csv"
+```
+
+The application needs a real desktop and an available OpenGL graphics driver. Do not set `QT_QPA_PLATFORM` to `offscreen`. Keep the terminal open while the application is running; close the application window to end the process.
 
 ## Supported files
-Recording formats include `.edf`, `.bdf`, `.gdf`, `.vhdr`, `.eeg`, `.cnt`, `.set`, `.egi`, `.rec`, and `.trc`. Some formats require companion files in the same folder, such as BrainVision `.vhdr`, `.eeg`, and `.vmrk`.
+Recording formats include `.edf`, `.bdf`, `.gdf`, `.vhdr`, `.eeg`, `.cnt`, `.set`, `.egi`, `.rec`, and `.trc`. EEGLAB `.set` files are supported through MNE and the `pymatreader` dependency included in `requirements.txt`. Some formats require companion files in the same folder, such as BrainVision `.vhdr`, `.eeg`, and `.vmrk`.
 
 Hypnograms can be `.csv` or `.txt`. A TXT file contains one stage per line, either labels (`W`, `N1`, `N2`, `N3`, `R`, `U`) or numeric values (`-1` to `4`) with: 
 - W / WAKE = 0 
@@ -81,33 +111,39 @@ Hypnograms can be `.csv` or `.txt`. A TXT file contains one stage per line, eith
 - ART / A / U / UNKNOWN = -1 
 Epoch labels are expanded using the default 30-second epoch duration.
 
-The converted sample-level CSV can also be used directly:
+The converted sample-level CSV can also be used directly. On macOS:
 
 ```bash
 ./launch.sh recording.edf --hypnogram stages_converted.csv
 ```
+On Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\python.exe .\run_sleep_sco.py "C:\data\recording.edf" --hypnogram "C:\data\stages_converted.csv"
+```
+
 For timestamped hypnograms, the timestamps are used to align the hypnogram with the time stored in the EEG file. 
 The default timestamp correction is +1 hour, which specific to the data workflow for which this adaptation was developed. 
-Check the timestamps before using a different value. This can be changed: 
+Check the timestamps before using a different value. This can be changed on macOS:
 
 ```bash
 ./launch.sh recording.edf --hypnogram stages.csv --csv-to-edf-offset-hours 2
+```
+Or on Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\python.exe .\run_sleep_sco.py "C:\data\recording.edf" --hypnogram "C:\data\stages.csv" --csv-to-edf-offset-hours 2
 ```
 
 ## VS Code
 Use **Python: Select Interpreter** and choose:
 
 ```text
-/path/to/nap_in_the_vineyard/.venv/bin/python
+macOS:  /path/to/nap_in_the_vineyard-main/.venv/bin/python
+Windows: .venv\Scripts\python.exe
 ```
 
-The workspace setting points VS Code to this interpreter. Run `./launch.sh` from the integrated terminal, or run `run_sleep_sco.py` after selecting this interpreter. 
-
-```bash
-python run_sleep_sco.py recording.edf --hypnogram stages.txt
-```
-
-Do not run `/usr/bin/python3 run_sleep_sco.py`; it may not contain the installed dependencies and can use an incompatible Qt/OpenGL environment.
+On macOS, run `./launch.sh` from the integrated terminal. On Windows, run `run_sleep_sco.py` with the selected project interpreter. Avoid system Python interpreters that do not have the project dependencies installed.
 
 ## Lab-specific adaptations
 This project adapt the original software to the EEG files used in our lab. 
